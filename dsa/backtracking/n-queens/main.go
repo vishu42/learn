@@ -3,27 +3,31 @@ package main
 import "fmt"
 
 // this is a classic backtracking problem
-// the main logic would be to figure out if current position is under attack
-//
-// let a 2d array represent a board
-// [
-// [".", ".", ".", "."],
-// [".", ".", ".", "."],
-// [".", ".", ".", "."],
-// [".", ".", ".", "."],
-// ]
+// solving for a 4 queens
+var col [4]bool
+var diag [7]bool
+var antiDiag [7]bool
 
-func isQueenUnderAttack(board [][]string, posX int, posY int) {
+func solve4x4(y int) {
+	n := 4
 
-}
-
-func solve(n int, solution [][]string, index int) {
-	if n == index {
-		fmt.Println(solution)
+	// base condition
+	if n == y {
+		fmt.Printf("sol found %+v \n", col)
+		return
 	}
 
+	for x := 0; x < n; x++ {
+		if col[x] || diag[x+y] || antiDiag[x-y+n-1] {
+			continue
+		}
+
+		col[x], diag[x+y], antiDiag[x-y+n-1] = true, true, true
+		solve4x4(y + 1)
+		col[x], diag[x+y], antiDiag[x-y+n-1] = false, false, false
+	}
 }
 
 func main() {
-
+	solve4x4(0)
 }
