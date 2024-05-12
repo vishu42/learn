@@ -30,6 +30,27 @@ func solve(seed int, input, sol string) {
 	}
 }
 
+var sol = ""
+
+func SolveSeatingArrangement(inp string) {
+	if len(inp) == len(sol) {
+		fmt.Println(sol)
+		return
+	}
+
+	for i := 0; i < len(inp); i++ {
+		if !strings.Contains(sol, string(inp[i])) {
+			sol = sol + string(inp[i])
+			SolveSeatingArrangement(inp)
+
+			sol = sol[:len(sol)-1]
+		}
+
+	}
+}
+
 func main() {
-	solve(0, "ABC", "")
+	// solve(0, "ABC", "")
+
+	SolveSeatingArrangement("ABC")
 }
