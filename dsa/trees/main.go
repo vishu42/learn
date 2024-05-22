@@ -13,6 +13,27 @@ type Node struct {
 	data  int
 }
 
+func (root *Node) AddLeft(n *Node) *Node {
+	if root == nil {
+		fmt.Println("Cant add node to nil")
+		return nil
+	}
+
+	root.left = n
+	return n
+}
+
+func (root *Node) AddRight(n *Node) *Node {
+	if root == nil {
+		fmt.Println("Cant add node to nil")
+		return nil
+	}
+
+	root.right = n
+
+	return n
+}
+
 func New() *Node {
 	return &Node{
 		left:  nil,
@@ -132,6 +153,43 @@ func Height(root *Node) {
 
 }
 
+func HeightUsingBacktracking(root *Node) {
+	fmt.Println("============Height using backtracking============")
+
+	var paths [][]*Node
+	var path []*Node
+
+	var backtrack func(*Node, []*Node)
+	path = append(path, root)
+	backtrack = func(root *Node, path []*Node) {
+		if root.left == nil && root.right == nil {
+			paths = append(paths, path)
+			return
+		}
+
+		if root.left != nil {
+			path = append(path, root.left)
+			backtrack(root.left, path)
+			path = path[:len(path)-1]
+		}
+
+		if root.right != nil {
+			path = append(path, root.right)
+			backtrack(root.right, path)
+			path = path[:len(path)-1]
+		}
+
+	}
+	backtrack(root, path)
+
+	for _, path := range paths {
+		for _, p := range path {
+			fmt.Print(p.data)
+		}
+		fmt.Println("")
+	}
+}
+
 func main() {
 
 	root := &Node{
@@ -140,12 +198,21 @@ func main() {
 		data:  -1,
 	}
 
-	buildTree(root)
+	root.AddData(1)
+
+	root.AddLeft(
+		&Node{
+			left:  nil,
+			right: nil,
+			data:  7,
+		})
 
 	LevelOrderTraversal(root)
 
 	LeafNodes(root)
 
 	Height(root)
+
+	HeightUsingBacktracking(root)
 
 }
